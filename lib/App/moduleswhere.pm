@@ -2,7 +2,7 @@ package App::moduleswhere;
 
 use warnings;
 use strict;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 1;
 
@@ -25,9 +25,16 @@ You may ask, why not using `perldoc -l`? well, if the module doesn't
 have any pod( this happens occasionally but does happen ), `perldoc -l` will
 fail, in this case, mwhere comes to rescue!
 
+Technically, C<mwhere> just "require" the modules first and then find the
+info in %INC, check out C<Module::Info> if you don't like the "require" way.
+
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
+
+=head1 SEE ALSO
+
+C<Module::Info>
 
 =head1 AUTHOR
 

@@ -19,7 +19,7 @@ EOF
 }
 
 for my $mod (@ARGV) {
-    eval "require $mod" or warn "failed to require '$mod'\n" and next;
+    eval "require $mod" or warn "failed to require '$mod': $@" and next;
 
     my @parts = split /::/, $mod;
     my $inc = join( '/', @parts ) . '.pm';
