@@ -14,4 +14,4 @@ meta-spec:
 name: App-moduleswhere
 resources:
   repository: http://github.com/bestpractical/app-moduleswhere.git
-version: 0.02
+version: 0.03

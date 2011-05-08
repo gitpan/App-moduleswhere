@@ -2,7 +2,7 @@ package App::moduleswhere;
 
 use warnings;
 use strict;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 1;
 
@@ -14,8 +14,10 @@ App::moduleswhere - show modules' locations
 
 =head1 SYNOPSIS
 
-    mwhere Carp                                    # show location of Carp.pm
-    mwhere Carp CGI                                # copy both Carp.pm and CGI.pm
+    mwhere Carp                              # show location of Carp.pm
+    mwhere --no-require Carp                 # ditto, but no "require"
+    mwhere -n Carp                           # ditto
+    mwhere Carp CGI                          # show both Carp.pm and CGI.pm
 
 =head1 DESCRIPTION
 
@@ -25,8 +27,7 @@ You may ask, why not using `perldoc -l`? well, if the module doesn't
 have any pod( this happens occasionally but does happen ), `perldoc -l` will
 fail, in this case, mwhere comes to rescue!
 
-Technically, C<mwhere> just "require" the modules first and then find the
-info in %INC, check out C<Module::Info> if you don't like the "require" way.
+check out C<Module::Info> if you want to know more info of modules.
 
 =head1 BUGS AND LIMITATIONS
 

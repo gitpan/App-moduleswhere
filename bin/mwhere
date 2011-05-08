@@ -3,8 +3,9 @@ use strict;
 use warnings;
 
 use Getopt::Long;
+use File::Spec::Functions 'catfile';
 my %args;
-GetOptions( \%args, 'help|h' ) or exit;
+GetOptions( \%args, 'no-require|n', 'help|h' ) or exit;
 
 @ARGV = grep { defined } @ARGV;
 
@@ -12,18 +13,38 @@ if ( $args{help} || !@ARGV ) {
     print <<'EOF';
 USAGE: mwhere Module [ ... ]
 EXAMPLES:
-    mwhere Carp                                    # show location of Carp.pm
-    mwhere Carp CGI                                # copy both Carp.pm and CGI.pm
+    mwhere Carp                              # show location of Carp.pm
+    mwhere --no-require Carp                 # ditto, but no "require"
+    mwhere -n Carp                           # ditto
+    mwhere Carp CGI                          # show both Carp.pm and CGI.pm
 EOF
     exit;
 }
 
 for my $mod (@ARGV) {
-    eval "require $mod" or warn "failed to require '$mod': $@" and next;
-
     my @parts = split /::/, $mod;
-    my $inc = join( '/', @parts ) . '.pm';
-    my $source = $INC{$inc};
-    print $source, "\n";
+    my $source;
+
+    if ( $args{'no-require'} ) {
+        $parts[-1] .= '.pm';
+        for my $inc ( @INC ) {
+            my $file = catfile( $inc, @parts );
+            if ( -e $file ) {
+                $source = $file;
+                last;
+            }
+        }
+
+        unless ( $source ) {
+            warn "failed to find $mod\n";
+            next;
+        }
+    }
+    else {
+        eval "require $mod" or warn "failed to require '$mod': $@" and next;
+        my $inc = join( '/', @parts ) . '.pm';
+        $source = $INC{$inc};
+    }
+    print "$source\n";
 }
 
